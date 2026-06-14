@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,16 +22,39 @@ public class FoodController {
     FoodRepository foodRepository; //injeta automaticamente todos os metodos do repository subistituindo os " news"
 
     @GetMapping
-    public List<FoodResponseDTO> getAll(){
+    public List<FoodResponseDTO> get(){
         List <FoodResponseDTO> foodModel = foodRepository.findAll().stream().map(FoodResponseDTO::new).toList();
         return foodModel;
 
     }
 
     @RequestMapping
-        public ResponseEntity create(@RequestParam FoodRequestDTO foodDto){
+        public ResponseEntity create(@RequestBody FoodRequestDTO foodDto){
         FoodModel food = new FoodModel(foodDto);
         foodRepository.save(food);
         return  ResponseEntity.status(HttpStatus.CREATED).body("Adicionado com sucesso!");
     }
+
+    @DeleteMapping("/{id}")
+        public ResponseEntity delete(@RequestParam FoodResponseDTO foodResponseDTO){
+        foodRepository.deleteById(foodResponseDTO.id());
+        return ResponseEntity.status(HttpStatus.OK).body("Deletado com sucesso");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity uptade(@PathVariable Integer id, @RequestBody FoodResponseDTO foodResponseDTO){
+
+     Optional <FoodModel> food = foodRepository.findById(id);
+
+     FoodModel response = food.get();
+
+     response.setName(foodResponseDTO.name());
+     response.setPrice(foodResponseDTO.price());
+     response.setImage(foodResponseDTO.image());
+
+     foodRepository.save(response);
+
+     return ResponseEntity.status(HttpStatus.OK).body("Atualizado com suscesso");
+    }
+
 }

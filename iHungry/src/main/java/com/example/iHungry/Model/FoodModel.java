@@ -25,9 +25,9 @@ public class FoodModel {
 
 
     public FoodModel(FoodRequestDTO foodRequestDTO) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.image = image;
+
+        this.name = foodRequestDTO.nome();
+        this.price = foodRequestDTO.price();
+        this.image = foodRequestDTO.image();
     }
 }
