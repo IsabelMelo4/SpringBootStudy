@@ -147,10 +147,12 @@ Responsável por buscar dados. Pode ou não receber parâmetros.
 Exemplo para buscar todos os registros:
 
 ```java
-@GetMapping
-public List<FoodModel> getAll() {
-    return foodRepository.findAll();
-}
+   @GetMapping
+    public List<FoodModel> get(){
+        List <FoodModel> foodModel = foodRepository.findAll();
+        return foodModel;
+
+    }
 ```
 
 Exemplo para buscar um registro específico:
@@ -158,7 +160,7 @@ Exemplo para buscar um registro específico:
 ```java
 @GetMapping("/{id}")
 public FoodModel getById(@PathVariable Integer id) {
-    return foodRepository.findById(id).orElseThrow();
+    return foodRepository.findById(id);
 }
 ```
 
@@ -166,16 +168,16 @@ public FoodModel getById(@PathVariable Integer id) {
 
 Responsável por criar ou adicionar dados.
 
-Na maioria dos casos recebe um corpo (`@RequestBody`) contendo as informações que serão cadastradas, porém isso não é obrigatório.
+Na maioria dos casos recebe um corpo (`@RequestBody`) contendo as informações que serão cadastradas.
 
 Exemplo utilizando `@RequestBody`:
 
 ```java
-@PostMapping
-public FoodModel create(@RequestBody FoodRequestDTO dto) {
-    FoodModel food = new FoodModel(dto);
-    return foodRepository.save(food);
-}
+    @RequestMapping
+        public ResponseEntity create(@RequestBody FoodModel food){
+        foodRepository.save(food);
+        return  ResponseEntity.status(HttpStatus.CREATED).body("Adicionado com sucesso!");
+    }
 ```
 
 Exemplo utilizando parâmetros:
@@ -201,10 +203,11 @@ Geralmente recebe o identificador do registro que será removido.
 Exemplo:
 
 ```java
-@DeleteMapping("/{id}")
-public void delete(@PathVariable Integer id) {
-    foodRepository.deleteById(id);
-}
+  @DeleteMapping("/{id}")
+        public ResponseEntity delete(@RequestParam FoodModel food){
+        foodRepository.deleteById(food.getId());
+        return ResponseEntity.status(HttpStatus.OK).body("Deletado com sucesso");
+    }
 ```
 
 ## @PutMapping
@@ -216,21 +219,114 @@ Normalmente recebe o identificador do registro e um corpo contendo as novas info
 Exemplo:
 
 ```java
-@PutMapping("/{id}")
-public FoodModel update(
-        @PathVariable Integer id,
-        @RequestBody FoodModel foodModel) {
+    @PutMapping("/{id}")
+    public ResponseEntity uptade(@PathVariable Integer id, @RequestBody FoodResponseDTO foodResponseDTO){
 
-    FoodModel food = foodRepository.findById(id);
+     Optional <FoodModel> food = foodRepository.findById(id);
 
-    food.setNome(dto.nome());
-    food.setPreco(dto.preco());
+     FoodModel response = food.get();
 
-    return foodRepository.save(food);
+     response.setName(foodResponseDTO.name());
+     response.setPrice(foodResponseDTO.price());
+     response.setImage(foodResponseDTO.image());
+
+     foodRepository.save(response);
+
+     return ResponseEntity.status(HttpStatus.OK).body("Atualizado com suscesso");
+    }
+```
+
+
+## @RequestBody
+
+`@RequestBody` é utilizado para receber dados enviados no corpo da requisição HTTP, normalmente em formato JSON.
+
+### Exemplo de JSON
+
+```json
+{
+    "name": "Pizza",
+    "price": 30,
+    "image": "pizza.png"
 }
 ```
 
-> **Nota:** Nessa primeira parte o uso de DTO foi ignorado em alguns trechos para facilitar o entendimento. Ele será abordado nos próximos tópicos.
+### Exemplo no Controller
+
+```java
+@PostMapping
+public ResponseEntity create(@RequestBody FoodRequestDTO dto){
+    ...
+}
+```
+
+O Spring converte automaticamente o JSON para um objeto Java.
+
+### Quando utilizar?
+
+Quando for necessário enviar objetos completos para a API.
+
+---
+
+## @RequestParam
+
+`@RequestParam` é utilizado para receber parâmetros enviados na URL após o caractere `?`.
+
+### Exemplo
+
+```http
+GET /foods?name=Pizza
+```
+
+### Exemplo no Controller
+
+```java
+@GetMapping
+public ResponseEntity search(@RequestParam String name){
+    ...
+}
+```
+
+Valor recebido:
+
+```java
+name = "Pizza"
+```
+
+### Quando utilizar?
+
+Quando for necessário enviar filtros, pesquisas ou parâmetros simples pela URL.
+
+---
+
+## @PathVariable
+
+`@PathVariable` é utilizado para capturar valores presentes no caminho da URL.
+
+### Exemplo
+
+```http
+GET /foods/1
+```
+
+### Exemplo no Controller
+
+```java
+@GetMapping("/{id}")
+public ResponseEntity findById(@PathVariable Integer id){
+    ...
+}
+```
+
+Valor recebido:
+
+```java
+id = 1
+```
+
+### Quando utilizar?
+
+Quando o valor faz parte da identificação do recurso.
 
 
 
