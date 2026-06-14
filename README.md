@@ -7,7 +7,7 @@
 
 Este repositório foi criado com o objetivo de servir como um guia de estudos e consulta sobre Spring Boot. Aqui são reunidas anotações, conceitos fundamentais, exemplos práticos e explicações das principais anotações e recursos utilizados no desenvolvimento de APIs Java com Spring.
 
-O conteúdo é organizado de forma progressiva para auxiliar os estudos e compreender desde os conceitos básicos até tópicos mais avançados, como persistência de dados, segurança, testes e deploy.
+O conteúdo é organizado de forma progressiva para auxiliar os estudos e compreender  os conceitos básicos.
 
 </div>
 
