@@ -266,7 +266,7 @@ O Spring converte automaticamente o JSON para um objeto Java.
 
 Quando for necessário enviar objetos completos para a API.
 
----
+
 
 ## @RequestParam
 
@@ -297,7 +297,7 @@ name = "Pizza"
 
 Quando for necessário enviar filtros, pesquisas ou parâmetros simples pela URL.
 
----
+
 
 ## @PathVariable
 
