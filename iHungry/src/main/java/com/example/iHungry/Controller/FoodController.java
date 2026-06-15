@@ -15,7 +15,8 @@ import java.util.Optional;
 
 import static java.util.Arrays.stream;
 
-@RestController("/food")
+@RestController
+@RequestMapping("/food")
 public class FoodController {
 
 @Autowired
@@ -36,8 +37,8 @@ public class FoodController {
     }
 
     @DeleteMapping("/{id}")
-        public ResponseEntity delete(@RequestParam FoodResponseDTO foodResponseDTO){
-        foodRepository.deleteById(foodResponseDTO.id());
+        public ResponseEntity delete(@PathVariable Integer id){
+        foodRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Deletado com sucesso");
     }
 

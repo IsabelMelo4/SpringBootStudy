@@ -1,9 +1,7 @@
 package com.example.iHungry.Model;
 
 import com.example.iHungry.ResponseDTO.FoodRequestDTO;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @AllArgsConstructor
 @SpringBootApplication //essa anotação serve para indicar que essa classe é a que vai executar a aplicação spring
 
+@Entity
+@Table(name = "food")
 public class FoodModel {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) //indica que o id vai ser gerado como identity
     private Integer id;
@@ -26,7 +26,7 @@ public class FoodModel {
 
     public FoodModel(FoodRequestDTO foodRequestDTO) {
 
-        this.name = foodRequestDTO.nome();
+        this.name = foodRequestDTO.name();
         this.price = foodRequestDTO.price();
         this.image = foodRequestDTO.image();
     }

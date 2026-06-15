@@ -1,6 +1,6 @@
 package com.example.iHungry.ResponseDTO;
 
-public record FoodRequestDTO(String nome, Long price, String image) {
+public record FoodRequestDTO(String name, Long price, String image) {
 
 
 }
