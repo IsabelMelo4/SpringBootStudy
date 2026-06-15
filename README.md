@@ -1,7 +1,7 @@
 <div align="center">
 
 
-<img src="./assets/banner.png" alt="banner" width="600"/>
+<img src="iHungry/assets/banner.png" alt="banner" width="1000"/>
 
 # Spring Boot — Anotações de Estudo
 
